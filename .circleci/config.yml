@@ -1,0 +1,53 @@
+version: 2.1
+
+orbs:
+  android: circleci/android@2.3.0
+
+jobs:
+  unit_tests:
+    executor: android/android
+    steps:
+      - checkout
+      - android/restore-gradle-cache
+      - run:
+          name: Run unit tests
+          command: ./gradlew test --no-daemon
+      - android/save-gradle-cache
+      - store_test_results:
+          path: app/build/test-results/test/
+      - store_artifacts:
+          path: app/build/reports/tests/test/
+          destination: test-reports
+
+  ui_tests:
+    executor: android/android
+    steps:
+      - checkout
+      - android/restore-gradle-cache
+      - run:
+          name: Create Android virtual device
+          command: |
+            sdkmanager "system-images;android-34;google_apis;x86_64"
+            echo "hw.gpu=yes" >> ~/.android/avd/emulator.avd/config.ini
+      - run:
+          name: Launch emulator (background)
+          command: emulator -avd emulator-api34 -no-window -no-audio &
+          background: true
+      - run:
+          name: Wait for emulator startup
+          command: adb wait-for-device
+      - run:
+          name: Run UI and integration tests
+          command: ./gradlew connectedAndroidTest --no-daemon
+      - android/save-gradle-cache
+      - store_test_results:
+          path: app/build/outputs/androidTest-results/connected/
+      - store_artifacts:
+          path: app/build/reports/androidTests/connected/
+          destination: ui-test-reports
+
+workflows:
+  test_suite:
+    jobs:
+      - unit_tests
+      - ui_tests
