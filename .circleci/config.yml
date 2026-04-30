@@ -7,34 +7,59 @@ jobs:
     environment:
       JVM_OPTS: -Xmx3200m
       GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3200m"
+      ANDROID_HOME: /home/circleci/android-sdk
     steps:
       - checkout
+
       - restore_cache:
           keys:
             - gradle-{{ checksum "gradle/libs.versions.toml" }}
             - gradle-cache-
+
+      - run:
+          name: Setup environment
+          command: |
+            echo "ANDROID_HOME is $ANDROID_HOME"
+            ls -la gradle/wrapper/ || echo "Wrapper files not found"
+
       - run:
           name: Accept Android SDK licenses
           command: |
-            yes | sdkmanager --licenses || true
+            yes | sdkmanager --licenses 2>/dev/null || true
+
       - run:
           name: Download Android SDK components
           command: |
-            sdkmanager "platforms;android-34" "build-tools;34.0.0" || true
+            sdkmanager "platforms;android-34" \
+                      "build-tools;34.0.0" \
+                      "system-images;android-34;google_apis;x86" 2>/dev/null || true
+
+      - run:
+          name: Build project
+          command: |
+            chmod +x ./gradlew
+            ./gradlew --version
+            ./gradlew build -x connectedAndroidTest --no-daemon --stacktrace
+
       - run:
           name: Run unit tests
           command: |
-            gradle test --no-daemon --stacktrace
+            ./gradlew test --no-daemon --stacktrace
+
       - save_cache:
           key: gradle-{{ checksum "gradle/libs.versions.toml" }}
           paths:
             - ~/.gradle
             - ~/.android
+            - ~/android-sdk
+
       - store_test_results:
           path: app/build/test-results/test/
+
       - store_artifacts:
           path: app/build/reports/tests/test/
           destination: test-reports
+
       - store_artifacts:
           path: app/build
           destination: build-logs
