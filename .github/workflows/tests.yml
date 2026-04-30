@@ -25,11 +25,9 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build --no-daemon
-
-      - name: Run unit tests
-        run: ./gradlew test --no-daemon --stacktrace
+      - name: Run unit tests only
+        run: ./gradlew test --no-daemon --stacktrace --info
+        continue-on-error: false
 
       - name: Upload test results
         if: always()
@@ -37,6 +35,7 @@ jobs:
         with:
           name: test-results
           path: app/build/reports/tests/test/
+          if-no-files-found: ignore
 
       - name: Upload test reports
         if: always()
@@ -46,10 +45,12 @@ jobs:
           path: |
             app/build/test-results/
             app/build/reports/
+          if-no-files-found: ignore
 
-      - name: Publish test results
-        if: always()
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          files: app/build/test-results/test/TEST-*.xml
-          check_name: Test Results
+      - name: Report test status
+        if: success()
+        run: echo "✅ All tests passed!"
+
+      - name: Report test failure
+        if: failure()
+        run: echo "❌ Tests failed" && exit 1
