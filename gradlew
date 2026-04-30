@@ -32,17 +32,17 @@
 #
 ##############################################################################
 
-# Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+# Add default JVM options here.
 DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
 
 # Use the maximum available, or set MAX_FD != -1 to use that value.
 MAX_FD=maximum
 
-warn () {
+warn() {
     echo "$*"
 } >&2
 
-die () {
+die() {
     echo
     echo "$*"
     echo
@@ -54,7 +54,7 @@ cygwin=false
 msys=false
 darwin=false
 nonstop=false
-case "$( uname )" in
+case "$(uname)" in
   CYGWIN* )
     cygwin=true
     ;;
@@ -69,50 +69,45 @@ case "$( uname )" in
     ;;
 esac
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SCRIPT_DIR=$(cd -- "$(dirname -- "$0")" >/dev/null 2>&1 && pwd)
+GRADLE_APP_HOME=$(dirname "$SCRIPT_DIR")
 
-# Disallow running with Java 5 or older versions.
-if ! "$JAVA_CMD" -version 2>&1 | grep -q "^java version \"[6-9]\|^openjdk version \"[6-9]\|^javac version \"[6-9]\"; then
-    die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
-
-Please set the JAVA_HOME variable in your environment to match the
-location of your Java installation."
+# Extend the path to include the gradle wrapper jar directory
+if [ -d "$GRADLE_APP_HOME/gradle/wrapper" ]; then
+    CLASSPATH="$GRADLE_APP_HOME/gradle/wrapper/gradle-wrapper.jar:$CLASSPATH"
 fi
 
-if [ -z "$JAVA_HOME" ] ; then
-    if [ -x /usr/libexec/java_home ]; then
-        export JAVA_HOME=$(/usr/libexec/java_home)
+# Determine JAVA_HOME
+if [ -z "$JAVA_HOME" ]; then
+    if type java >/dev/null 2>&1; then
+        JAVA_HOME=$(dirname "$(dirname "$(command -v java)")")
+    elif [ -x /usr/libexec/java_home ]; then
+        JAVA_HOME=$(/usr/libexec/java_home)
     else
-        export JAVA_HOME=/usr
+        JAVA_HOME=/usr
     fi
 fi
+export JAVA_HOME
 
-# Increase the maximum file descriptors if we can.
-if ! "$cygwin" && ! "$darwin" && ! "$nonstop" ; then
-    case $MAX_FD in #(
-      /*)
-        MAX_FD=$( stat -f%z "$MAX_FD" 2>/dev/null ) ||
-        MAX_FD=$( stat -c%s "$MAX_FD" 2>/dev/null ) ||
-        MAX_FD=unknown
-        ;;
-    esac
-    case $MAX_FD in #(
-      '' | soft) :;; #(
-      *)
-        ulimit -n "$MAX_FD" ||
-        warn "Could not set maximum file descriptor limit to $MAX_FD"
-        ;;
-    esac
+# For Cygwin or MSYS, convert paths
+if $cygwin || $msys; then
+    JAVA_HOME=$(cygpath --windows "$JAVA_HOME")
+    CLASSPATH=$(cygpath --path --windows "$CLASSPATH")
+    GRADLE_APP_HOME=$(cygpath --path --windows "$GRADLE_APP_HOME")
 fi
 
-# Collect all arguments for the java command, and put them in the array before the "--match" arg.
+APP_BASE_NAME=$(basename "$0" .sh)
+JAVA_CMD="$JAVA_HOME/bin/java"
+
+# Build the command line
 set -- \
         "-Dorg.gradle.appname=$APP_BASE_NAME" \
+        "-Dorg.gradle.home=$GRADLE_APP_HOME" \
         -classpath "$CLASSPATH" \
         org.gradle.wrapper.GradleWrapperMain \
         "$@"
 
-# Use "xargs" to parse quoted args.
-eval "set -- $(printf '%s\n' "$DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS" | xargs)"
+# Use "xargs" to parse quoted args for proper handling
+eval "set -- $(printf '%s\n' "$DEFAULT_JVM_OPTS" | xargs) \"\$@\""
 
 exec "$JAVA_CMD" "$@"
