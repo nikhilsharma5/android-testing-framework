@@ -24,8 +24,7 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            chmod +x ./gradlew
-            ./gradlew test --no-daemon --stacktrace
+            gradle test --no-daemon --stacktrace
       - save_cache:
           key: gradle-{{ checksum "gradle/libs.versions.toml" }}
           paths:
