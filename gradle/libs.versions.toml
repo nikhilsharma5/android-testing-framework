@@ -1,0 +1,23 @@
+[versions]
+kotlin = "1.9.20"
+compose = "1.6.0"
+junit5 = "5.10.0"
+mockk = "1.13.8"
+hamcrest = "2.0.0.0"
+android-gradle = "8.2.0"
+androidx-lifecycle = "2.6.2"
+
+[libraries]
+compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "compose" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose" }
+compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose" }
+compose-ui-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose" }
+
+junit5 = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit5" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+hamcrest = { group = "org.hamcrest", name = "hamcrest", version.ref = "hamcrest" }
+
+androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version = "1.5.2" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version = "3.5.1" }
