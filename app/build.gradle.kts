@@ -36,26 +36,28 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
     implementation(libs.compose.foundation)
-    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation(libs.activity.compose)
 
     // Lifecycle
     implementation(libs.androidx.lifecycle)
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation(libs.androidx.lifecycle.runtime)
+
+    // AppCompat
+    implementation(libs.appcompat)
 
     // Unit testing
     testImplementation(libs.junit5)
     testImplementation(libs.mockk)
     testImplementation(libs.hamcrest)
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation(libs.kotlinx.coroutines.test)
 
     // UI testing
     androidTestImplementation(libs.compose.ui.test)
     androidTestImplementation(libs.compose.ui.manifest)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.espresso.core)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.0")
 
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.0")
+    debugImplementation(libs.compose.tooling)
 }
 
 tasks.named<Test>("test") {

@@ -1,23 +1,35 @@
 [versions]
 kotlin = "1.9.20"
 compose = "1.6.0"
+compose-runtime = "1.6.0"
 junit5 = "5.10.0"
 mockk = "1.13.8"
 hamcrest = "2.0.0.0"
 android-gradle = "8.2.0"
 androidx-lifecycle = "2.6.2"
+activity-compose = "1.8.0"
+lifecycle-runtime = "2.6.2"
+appcompat = "1.6.1"
+kotlinx-coroutines-test = "1.7.3"
+compose-tooling = "1.6.0"
 
 [libraries]
 compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "compose" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose" }
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "compose-runtime" }
 compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose" }
 compose-ui-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose" }
+compose-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose-tooling" }
 
 junit5 = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit5" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 hamcrest = { group = "org.hamcrest", name = "hamcrest", version.ref = "hamcrest" }
 
 androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version = "1.5.2" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version = "3.5.1" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
