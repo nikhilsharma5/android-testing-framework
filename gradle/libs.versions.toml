@@ -1,7 +1,7 @@
 [versions]
 kotlin = "1.9.20"
-compose = "1.6.0"
-compose-runtime = "1.6.0"
+compose = "1.7.0"
+compose-runtime = "1.7.0"
 junit5 = "5.10.0"
 mockk = "1.13.8"
 hamcrest = "2.0.0.0"
