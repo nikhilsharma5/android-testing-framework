@@ -17,16 +17,11 @@ jobs:
             - gradle-v2-
 
       - run:
-          name: Verify gradle wrapper
+          name: Setup environment
           command: |
             echo "ANDROID_HOME is $ANDROID_HOME"
-            echo "Checking gradle wrapper..."
-            ls -lh gradle/wrapper/
-            file gradle/wrapper/gradle-wrapper.jar
-            if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
-              echo "ERROR: gradle-wrapper.jar not found!"
-              exit 1
-            fi
+            echo "Gradle wrapper will auto-download jar on first run"
+            ls -la gradle/wrapper/
 
       - run:
           name: Accept Android SDK licenses
