@@ -70,7 +70,7 @@ case "$(uname)" in
 esac
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "$0")" >/dev/null 2>&1 && pwd)
-GRADLE_APP_HOME=$(dirname "$SCRIPT_DIR")
+GRADLE_APP_HOME="$SCRIPT_DIR"
 
 # Extend the path to include the gradle wrapper jar directory
 if [ -d "$GRADLE_APP_HOME/gradle/wrapper" ]; then
