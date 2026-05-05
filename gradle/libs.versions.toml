@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.20"
+kotlin = "1.9.22"
 compose = "1.5.4"
 compose-runtime = "1.5.4"
 compose-material3 = "1.1.2"
