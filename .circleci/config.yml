@@ -19,9 +19,15 @@ jobs:
       - run:
           name: Setup environment
           command: |
-            echo "ANDROID_HOME is $ANDROID_HOME"
-            echo "Gradle wrapper will auto-download jar on first run"
-            ls -la gradle/wrapper/
+            echo "=== ENVIRONMENT DEBUG ==="
+            echo "PWD: $(pwd)"
+            echo "ANDROID_HOME: $ANDROID_HOME"
+            echo "JAVA_HOME: $JAVA_HOME"
+            which java && java -version || echo "Java not found"
+            echo "=== GRADLE WRAPPER FILES ==="
+            ls -lah gradle/wrapper/
+            echo "=== GRADLE WRAPPER PROPERTIES ==="
+            cat gradle/wrapper/gradle-wrapper.properties
 
       - run:
           name: Accept Android SDK licenses
@@ -36,10 +42,17 @@ jobs:
                       "system-images;android-34;google_apis;x86" 2>/dev/null || true
 
       - run:
-          name: Build project
+          name: Test Gradle wrapper
           command: |
             chmod +x ./gradlew
-            ./gradlew --version
+            echo "=== Running: ./gradlew --version ==="
+            ./gradlew --version 2>&1 || true
+            echo "=== Checking gradle cache ==="
+            ls -la ~/.gradle/wrapper/dists/ 2>/dev/null || echo "No gradle cache yet"
+
+      - run:
+          name: Build project
+          command: |
             ./gradlew build -x connectedAndroidTest --no-daemon --stacktrace
 
       - run:
