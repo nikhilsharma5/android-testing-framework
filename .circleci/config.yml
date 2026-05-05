@@ -42,6 +42,18 @@ jobs:
                       "system-images;android-34;google_apis;x86" 2>/dev/null || true
 
       - run:
+          name: Validate gradle-wrapper.jar
+          command: |
+            echo "=== Validating JAR file ==="
+            file gradle/wrapper/gradle-wrapper.jar
+            echo "=== Checking JAR contents ==="
+            unzip -t gradle/wrapper/gradle-wrapper.jar 2>&1 | grep -E "GradleWrapperMain|error|Error" | head -5
+            echo "=== JAR size ==="
+            wc -c gradle/wrapper/gradle-wrapper.jar
+            echo "=== First bytes (hex) ==="
+            xxd -l 32 gradle/wrapper/gradle-wrapper.jar
+
+      - run:
           name: Test Gradle wrapper
           command: |
             chmod +x ./gradlew
