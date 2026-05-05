@@ -90,8 +90,8 @@ jobs:
           command: |
             sdkmanager "platforms;android-34" \
                       "build-tools;34.0.0" \
-                      "system-images;android-34;google_apis;x86" 2>/dev/null || true
-            echo no | avdmanager create avd -n test-emulator -k "system-images;android-34;google_apis;x86" --force
+                      "system-images;android-34;default;x86_64"
+            echo no | avdmanager create avd -n test-emulator -k "system-images;android-34;default;x86_64" --force 2>&1 | grep -v "Warning"
 
       - run:
           name: Start emulator
