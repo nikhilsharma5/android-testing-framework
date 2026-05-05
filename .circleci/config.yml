@@ -54,13 +54,19 @@ jobs:
             xxd -l 32 gradle/wrapper/gradle-wrapper.jar
 
       - run:
+          name: Test JAR directly with Java
+          command: |
+            echo "=== Testing jar with Java directly ==="
+            java -jar gradle/wrapper/gradle-wrapper.jar --version 2>&1 | head -20 || echo "Direct jar test failed"
+
+      - run:
           name: Test Gradle wrapper
           command: |
             chmod +x ./gradlew
+            echo "=== Checking gradlew script ==="
+            head -100 ./gradlew | tail -30
             echo "=== Running: ./gradlew --version ==="
-            ./gradlew --version 2>&1 || true
-            echo "=== Checking gradle cache ==="
-            ls -la ~/.gradle/wrapper/dists/ 2>/dev/null || echo "No gradle cache yet"
+            bash -x ./gradlew --version 2>&1 | head -50 || true
 
       - run:
           name: Build project
