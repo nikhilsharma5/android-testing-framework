@@ -13,14 +13,20 @@ jobs:
 
       - restore_cache:
           keys:
-            - gradle-{{ checksum "gradle/libs.versions.toml" }}
-            - gradle-cache-
+            - gradle-v2-{{ checksum "gradle/libs.versions.toml" }}
+            - gradle-v2-
 
       - run:
-          name: Setup environment
+          name: Verify gradle wrapper
           command: |
             echo "ANDROID_HOME is $ANDROID_HOME"
-            ls -la gradle/wrapper/ || echo "Wrapper files not found"
+            echo "Checking gradle wrapper..."
+            ls -lh gradle/wrapper/
+            file gradle/wrapper/gradle-wrapper.jar
+            if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
+              echo "ERROR: gradle-wrapper.jar not found!"
+              exit 1
+            fi
 
       - run:
           name: Accept Android SDK licenses
@@ -47,7 +53,7 @@ jobs:
             ./gradlew test --no-daemon --stacktrace
 
       - save_cache:
-          key: gradle-{{ checksum "gradle/libs.versions.toml" }}
+          key: gradle-v2-{{ checksum "gradle/libs.versions.toml" }}
           paths:
             - ~/.gradle
             - ~/.android
@@ -77,8 +83,8 @@ jobs:
 
       - restore_cache:
           keys:
-            - gradle-{{ checksum "gradle/libs.versions.toml" }}
-            - gradle-cache-
+            - gradle-v2-{{ checksum "gradle/libs.versions.toml" }}
+            - gradle-v2-
 
       - run:
           name: Accept Android SDK licenses
@@ -110,7 +116,7 @@ jobs:
             ./gradlew connectedAndroidTest --no-daemon --stacktrace
 
       - save_cache:
-          key: gradle-{{ checksum "gradle/libs.versions.toml" }}
+          key: gradle-v2-{{ checksum "gradle/libs.versions.toml" }}
           paths:
             - ~/.gradle
             - ~/.android
