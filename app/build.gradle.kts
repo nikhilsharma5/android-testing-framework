@@ -60,6 +60,6 @@ dependencies {
     debugImplementation(libs.compose.tooling)
 }
 
-tasks.named<Test>("test") {
+tasks.withType<Test> {
     useJUnitPlatform()
 }
