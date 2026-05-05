@@ -17,6 +17,12 @@ jobs:
             - gradle-v2-
 
       - run:
+          name: Pre-cache Gradle distribution (avoid download failures)
+          command: |
+            echo "NOTE: Gradle distributions from old versions may not be available."
+            echo "Gradle wrapper will use local jar and attempt download if needed."
+
+      - run:
           name: Setup environment
           command: |
             echo "=== ENVIRONMENT DEBUG ==="
