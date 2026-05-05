@@ -1,0 +1,7 @@
+# Binary files
+*.jar binary
+*.zip binary
+*.apk binary
+
+# Gradle wrapper
+gradle/wrapper/gradle-wrapper.jar binary
