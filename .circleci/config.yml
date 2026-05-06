@@ -168,5 +168,15 @@ jobs:
 workflows:
   test_suite:
     jobs:
-      - unit_tests
-      - instrumented_tests
+      - unit_tests:
+          filters:
+            branches:
+              only:
+                - main
+                - /^feature\/.*/
+      - instrumented_tests:
+          filters:
+            branches:
+              only:
+                - main
+                - /^feature\/.*/
